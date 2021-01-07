@@ -8,8 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.main_fragment.*
 import secretymus.id.cermaticodingtest.R
+import secretymus.id.cermaticodingtest.User
+import secretymus.id.cermaticodingtest.UserListAdapter
+import secretymus.id.cermaticodingtest.querySearchResult
 
 class MainFragment : Fragment() {
 
@@ -26,6 +30,20 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val searchResult = querySearchResult(
+            10, false, User("username", 0, "", "", "", "", "", "")
+        )
+
+        recyclerView.layoutManager = LinearLayoutManager(
+            context,
+            LinearLayoutManager.VERTICAL,
+            false
+        )
+        recyclerView.adapter = UserListAdapter(listOf(
+            User("username", 0, "", "", "", "", "", "")
+        ))
+
         searchView.setOnQueryTextFocusChangeListener { v, hasFocus ->
 
         }
