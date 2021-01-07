@@ -2,7 +2,6 @@ package secretymus.id.cermaticodingtest.ui.main
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -19,43 +18,45 @@ class MainFragment : Fragment() {
     }
 
     private lateinit var viewModel: MainViewModel
-    private var userAdapter = UserListAdapter(arrayListOf())
+    private lateinit var userAdapter: UserListAdapter
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         return inflater.inflate(R.layout.main_fragment, container, false)
+    }
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        observeViewModel()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        observeViewModel()
+        userAdapter = context?.let { UserListAdapter(it, arrayListOf()) }!!
         setupRecyclerView()
         searchViewListener()
     }
 
-    fun observeViewModel(){
+    private fun observeViewModel(){
         viewModel.users.observe(viewLifecycleOwner, { user ->
-            Log.d("MainFragment", "User: $user")
             userAdapter.load(user)
         })
     }
 
-    fun setupRecyclerView(){
+    private fun setupRecyclerView(){
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = userAdapter
         }
     }
 
-    fun searchViewListener(){
-        searchView.setOnQueryTextFocusChangeListener { v, hasFocus ->
-
-        }
+    private fun searchViewListener(){
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                // do your logic here
-                Log.d("MainFragment", "Query : $query")
                 query?.let { viewModel.fetchFromRemote(query) }
                 return false
             }
@@ -66,10 +67,5 @@ class MainFragment : Fragment() {
         })
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
 
 }
