@@ -11,8 +11,8 @@ data class User(
     var type: String
 )
 
-data class querySearchResult(
+data class QuerySearchResult(
     val total_count: Int,
     val incomplete_result: Boolean,
-    val items: User
+    val items: List<User>
 )

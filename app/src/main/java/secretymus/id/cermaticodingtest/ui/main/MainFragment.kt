@@ -2,18 +2,15 @@ package secretymus.id.cermaticodingtest.ui.main
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.main_fragment.*
-import secretymus.id.cermaticodingtest.R
-import secretymus.id.cermaticodingtest.User
-import secretymus.id.cermaticodingtest.UserListAdapter
-import secretymus.id.cermaticodingtest.querySearchResult
+import secretymus.id.cermaticodingtest.*
 
 class MainFragment : Fragment() {
 
@@ -22,6 +19,7 @@ class MainFragment : Fragment() {
     }
 
     private lateinit var viewModel: MainViewModel
+    private var userAdapter = UserListAdapter(arrayListOf())
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
@@ -30,27 +28,35 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        observeViewModel()
+        setupRecyclerView()
+        searchViewListener()
+    }
 
-        val searchResult = querySearchResult(
-            10, false, User("username", 0, "", "", "", "", "", "")
-        )
+    fun observeViewModel(){
+        viewModel.users.observe(viewLifecycleOwner, { user ->
+            Log.d("MainFragment", "User: $user")
+            userAdapter.load(user)
+        })
+    }
 
-        recyclerView.layoutManager = LinearLayoutManager(
-            context,
-            LinearLayoutManager.VERTICAL,
-            false
-        )
-        recyclerView.adapter = UserListAdapter(listOf(
-            User("username", 0, "", "", "", "", "", "")
-        ))
+    fun setupRecyclerView(){
+        recyclerView.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = userAdapter
+        }
+    }
 
+    fun searchViewListener(){
         searchView.setOnQueryTextFocusChangeListener { v, hasFocus ->
 
         }
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 // do your logic here
-                Toast.makeText(context, query, Toast.LENGTH_SHORT).show()
+                Log.d("MainFragment", "Query : $query")
+                query?.let { viewModel.fetchFromRemote(query) }
                 return false
             }
 

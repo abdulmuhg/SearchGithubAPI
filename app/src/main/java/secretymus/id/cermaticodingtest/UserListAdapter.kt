@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class UserListAdapter(
-    val masterList: List<User>
+    val masterList: ArrayList<User>
 ): RecyclerView.Adapter<UserListAdapter.UserViewHolder>() {
 
     inner class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -25,6 +25,11 @@ class UserListAdapter(
         return UserViewHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.item_user, parent, false)
         )
+    }
+
+    fun load(list: List<User>){
+        masterList.addAll(list)
+        notifyDataSetChanged()
     }
 
 }
