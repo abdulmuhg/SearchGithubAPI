@@ -15,7 +15,7 @@ import secretymus.id.cermaticodingtest.model.User
 import secretymus.id.cermaticodingtest.network.ApiInterface
 
 class SearchListAdapter(
-    val context: Context,
+    private val context: Context,
     val masterList: ArrayList<User>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -72,17 +72,19 @@ class SearchListAdapter(
                 notifyDataSetChanged()
             }, 2000)
         } else {
-            Toast.makeText(context, "User not found", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.user_not_found), Toast.LENGTH_SHORT).show()
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = masterList[position]
         if (holder is UserViewHolder) {
-            holder.username.text = item.login
-            Glide.with(context)
-                .load(item.avatar_url)
-                .into(holder.avatar)
+            holder.apply {
+                username.text = item.login
+                Glide.with(context)
+                    .load(item.avatar_url)
+                    .into(avatar)
+            }
         }
     }
 

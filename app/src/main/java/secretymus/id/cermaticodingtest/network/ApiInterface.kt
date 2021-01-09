@@ -6,7 +6,7 @@ import retrofit2.http.Query
 import secretymus.id.cermaticodingtest.model.QuerySearchResult
 
 interface ApiInterface {
-    @GET("users")
+    @GET(ENDPOINT_USER)
     fun getSearchResult(
         @Query("q") query: String,
         @Query("page") page: Int,
@@ -15,5 +15,6 @@ interface ApiInterface {
 
     companion object{
         const val PAGE_SIZE = 12
+        const val ENDPOINT_USER = "users"
     }
 }

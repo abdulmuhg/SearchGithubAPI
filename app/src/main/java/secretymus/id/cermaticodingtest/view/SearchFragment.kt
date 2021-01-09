@@ -68,7 +68,7 @@ class SearchFragment : Fragment() {
         })
         viewModel.isLoadError.observe(viewLifecycleOwner, {
             if (it) {
-                Toast.makeText(context, "Error when load data", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, getString(R.string.error_load_data), Toast.LENGTH_SHORT).show()
             }
         })
     }
