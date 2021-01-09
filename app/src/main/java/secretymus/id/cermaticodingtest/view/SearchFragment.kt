@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_search.*
 import secretymus.id.cermaticodingtest.R
-import secretymus.id.cermaticodingtest.ui.search.SearchListAdapter
+import secretymus.id.cermaticodingtest.search.SearchListAdapter
 import secretymus.id.cermaticodingtest.network.ApiInterface.Companion.PAGE_SIZE
 import secretymus.id.cermaticodingtest.viewmodel.SearchViewModel
 

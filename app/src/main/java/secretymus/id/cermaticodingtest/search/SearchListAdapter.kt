@@ -1,4 +1,4 @@
-package secretymus.id.cermaticodingtest.ui.search
+package secretymus.id.cermaticodingtest.search
 
 import android.content.Context
 import android.os.Looper
