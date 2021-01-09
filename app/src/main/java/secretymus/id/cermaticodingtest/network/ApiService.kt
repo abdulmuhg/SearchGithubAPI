@@ -14,8 +14,8 @@ class ApiService {
         .build()
         .create(ApiInterface::class.java)
 
-    fun getResult(query: String): Single<QuerySearchResult> {
-        return api.getSearchResult(query)
+    fun getResult(query: String, page: Int): Single<QuerySearchResult> {
+        return api.getSearchResult(query = query, page = page)
     }
 
     companion object {

@@ -9,5 +9,7 @@ interface ApiInterface {
     @GET("users")
     fun getSearchResult(
         @Query("q") query: String,
+        @Query("page") page: Int,
+        @Query("per_page") per_page: Int = 12
     ): Single<QuerySearchResult>
 }
