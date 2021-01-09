@@ -4,7 +4,7 @@ import io.reactivex.Single
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import secretymus.id.cermaticodingtest.QuerySearchResult
+import secretymus.id.cermaticodingtest.model.QuerySearchResult
 
 class ApiService {
     private val api = Retrofit.Builder()

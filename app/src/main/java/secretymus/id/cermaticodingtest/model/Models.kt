@@ -1,4 +1,4 @@
-package secretymus.id.cermaticodingtest
+package secretymus.id.cermaticodingtest.model
 
 data class User(
     var login: String = "",

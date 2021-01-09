@@ -1,4 +1,4 @@
-package secretymus.id.cermaticodingtest.ui.main
+package secretymus.id.cermaticodingtest.view
 
 import android.os.Bundle
 import android.util.Log
@@ -11,22 +11,23 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.main_fragment.*
+import kotlinx.android.synthetic.main.fragment_search.*
 import secretymus.id.cermaticodingtest.R
-import secretymus.id.cermaticodingtest.UserListAdapter
+import secretymus.id.cermaticodingtest.ui.search.SearchListAdapter
 import secretymus.id.cermaticodingtest.network.ApiInterface.Companion.PAGE_SIZE
+import secretymus.id.cermaticodingtest.viewmodel.SearchViewModel
 
-class MainFragment : Fragment() {
+class SearchFragment : Fragment() {
 
     companion object {
-        fun newInstance() = MainFragment()
+        fun newInstance() = SearchFragment()
         const val CODE_FIRST_LOAD = 0
         const val CODE_LOAD_MORE = 1
     }
 
     lateinit var mLayoutManager: LinearLayoutManager
-    private lateinit var viewModel: MainViewModel
-    private lateinit var userAdapter: UserListAdapter
+    private lateinit var viewModel: SearchViewModel
+    private lateinit var searchAdapter: SearchListAdapter
     var currentPage: Int = 1
     var currentQuery: String = ""
 
@@ -35,19 +36,19 @@ class MainFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.main_fragment, container, false)
+        return inflater.inflate(R.layout.fragment_search, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(SearchViewModel::class.java)
         observeViewModel()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        userAdapter = context?.let { UserListAdapter(it, arrayListOf()) }!!
+        viewModel = ViewModelProvider(this).get(SearchViewModel::class.java)
+        searchAdapter = context?.let { SearchListAdapter(it, arrayListOf()) }!!
         setupRecyclerView()
         searchViewListener()
         addScrollerListener()
@@ -60,7 +61,7 @@ class MainFragment : Fragment() {
 
     private fun observeViewModel() {
         viewModel.users.observe(viewLifecycleOwner, { user ->
-            userAdapter.load(user)
+            searchAdapter.load(user)
         })
         viewModel.isLoading.observe(viewLifecycleOwner, {
             viewModel.updateLayout(shimmerPlaceholder, recyclerView)
@@ -76,7 +77,7 @@ class MainFragment : Fragment() {
         recyclerView.apply {
             mLayoutManager = LinearLayoutManager(context)
             layoutManager = mLayoutManager
-            adapter = userAdapter
+            adapter = searchAdapter
         }
     }
 
@@ -85,10 +86,10 @@ class MainFragment : Fragment() {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 currentPage = 1
                 currentQuery = query ?: ""
-                Log.d("MainFragment", "Query : $query")
+                Log.d("SearchFragment", "Query : $query")
                 query?.let {
                     shimmerPlaceholder.startShimmerAnimation()
-                    userAdapter.masterList.clear()
+                    searchAdapter.masterList.clear()
                     viewModel.fetchFromRemote(CODE_FIRST_LOAD, query, currentPage)
                 }
                 return false
@@ -104,11 +105,11 @@ class MainFragment : Fragment() {
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                val lastItemAt = userAdapter.masterList.lastIndex
+                val lastItemAt = searchAdapter.masterList.lastIndex
                 if (mLayoutManager.findLastCompletelyVisibleItemPosition() == lastItemAt && lastItemAt >= PAGE_SIZE) {
                     currentPage++
                     viewModel.fetchFromRemote(CODE_LOAD_MORE, currentQuery, currentPage)
-                    userAdapter.notifyDataSetChanged()
+                    searchAdapter.notifyDataSetChanged()
                 }
             }
         })

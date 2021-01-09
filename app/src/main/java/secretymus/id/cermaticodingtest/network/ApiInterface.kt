@@ -3,7 +3,7 @@ package secretymus.id.cermaticodingtest.network
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Query
-import secretymus.id.cermaticodingtest.QuerySearchResult
+import secretymus.id.cermaticodingtest.model.QuerySearchResult
 
 interface ApiInterface {
     @GET("users")

@@ -1,4 +1,4 @@
-package secretymus.id.cermaticodingtest.ui.main
+package secretymus.id.cermaticodingtest.viewmodel
 
 import android.util.Log
 import android.view.View
@@ -8,12 +8,12 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
-import secretymus.id.cermaticodingtest.QuerySearchResult
-import secretymus.id.cermaticodingtest.User
+import secretymus.id.cermaticodingtest.model.QuerySearchResult
+import secretymus.id.cermaticodingtest.model.User
 import secretymus.id.cermaticodingtest.network.ApiService
-import secretymus.id.cermaticodingtest.ui.main.MainFragment.Companion.CODE_LOAD_MORE
+import secretymus.id.cermaticodingtest.view.SearchFragment.Companion.CODE_LOAD_MORE
 
-class MainViewModel : ViewModel() {
+class SearchViewModel : ViewModel() {
     private val apiService = ApiService()
     private val disposable = CompositeDisposable()
     val users = MutableLiveData<List<User>>()

@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.MainFragment">
+    tools:context=".view.SearchFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:layout_width="match_parent"
@@ -40,29 +40,29 @@
             android:layout_marginTop="?actionBarSize"
             android:orientation="vertical">
 
-            <include layout="@layout/shimmer_placeholder_layout" />
+            <include layout="@layout/shimmer_placeholder" />
 
-            <include layout="@layout/shimmer_placeholder_layout" />
+            <include layout="@layout/shimmer_placeholder" />
 
-            <include layout="@layout/shimmer_placeholder_layout" />
+            <include layout="@layout/shimmer_placeholder" />
 
-            <include layout="@layout/shimmer_placeholder_layout" />
+            <include layout="@layout/shimmer_placeholder" />
 
-            <include layout="@layout/shimmer_placeholder_layout" />
+            <include layout="@layout/shimmer_placeholder" />
 
-            <include layout="@layout/shimmer_placeholder_layout" />
+            <include layout="@layout/shimmer_placeholder" />
 
-            <include layout="@layout/shimmer_placeholder_layout" />
+            <include layout="@layout/shimmer_placeholder" />
 
-            <include layout="@layout/shimmer_placeholder_layout" />
+            <include layout="@layout/shimmer_placeholder" />
 
-            <include layout="@layout/shimmer_placeholder_layout" />
+            <include layout="@layout/shimmer_placeholder" />
 
-            <include layout="@layout/shimmer_placeholder_layout" />
+            <include layout="@layout/shimmer_placeholder" />
 
-            <include layout="@layout/shimmer_placeholder_layout" />
+            <include layout="@layout/shimmer_placeholder" />
 
-            <include layout="@layout/shimmer_placeholder_layout" />
+            <include layout="@layout/shimmer_placeholder" />
         </LinearLayout>
     </com.facebook.shimmer.ShimmerFrameLayout>
 

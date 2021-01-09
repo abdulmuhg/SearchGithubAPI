@@ -1,8 +1,7 @@
-package secretymus.id.cermaticodingtest
+package secretymus.id.cermaticodingtest.ui.search
 
 import android.content.Context
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,9 +10,11 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import secretymus.id.cermaticodingtest.R
+import secretymus.id.cermaticodingtest.model.User
 import secretymus.id.cermaticodingtest.network.ApiInterface
 
-class UserListAdapter(
+class SearchListAdapter(
     val context: Context,
     val masterList: ArrayList<User>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -57,7 +58,6 @@ class UserListAdapter(
     }
 
     fun load(list: List<User>) {
-        Log.d("UserAdapter", "ListUser: $list")
         if (list.isNotEmpty()) {
             android.os.Handler(Looper.getMainLooper()).postDelayed({
                 if (masterList.size >= ApiInterface.PAGE_SIZE) {
