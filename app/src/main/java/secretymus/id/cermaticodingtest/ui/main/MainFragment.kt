@@ -71,7 +71,8 @@ class MainFragment : Fragment() {
             }
         })
         viewModel.isLoadError.observe(viewLifecycleOwner, {
-            //Toast.makeText(context, "Error when load data", Toast.LENGTH_SHORT).show()
+            if (it)
+            Toast.makeText(context, "Error when load data", Toast.LENGTH_SHORT).show()
         })
     }
 

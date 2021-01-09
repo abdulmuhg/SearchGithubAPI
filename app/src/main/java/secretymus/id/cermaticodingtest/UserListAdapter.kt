@@ -30,11 +30,10 @@ class UserListAdapter(
     override fun getItemCount(): Int = masterList.size
 
     override fun getItemViewType(position: Int): Int {
-        if(masterList.lastIndex == position && masterList.lastIndex >= 12) {
-            return VIEW_LOADING
-        }
-        else{
-            return VIEW_CONTENT
+        return if (masterList.lastIndex == position && masterList.lastIndex >= 12) {
+            VIEW_LOADING
+        } else {
+            VIEW_CONTENT
         }
     }
 
@@ -62,7 +61,9 @@ class UserListAdapter(
                 }
             }
             masterList.addAll(list)
-            masterList.add(User())
+            if (masterList.size >= 12) {
+                masterList.add(User())
+            }
             notifyDataSetChanged()
         }, 2000)
     }

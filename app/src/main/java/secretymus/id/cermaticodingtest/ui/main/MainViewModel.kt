@@ -40,7 +40,7 @@ class MainViewModel : ViewModel() {
                     }
 
                     override fun onError(e: Throwable) {
-                        isLoadError.value = true
+                        isLoadError.postValue(true)
                         isLoading.value = false
                         e.printStackTrace()
                         Log.e("API", e.message.toString())
