@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.main_fragment.*
 import secretymus.id.cermaticodingtest.R
 import secretymus.id.cermaticodingtest.UserListAdapter
+import secretymus.id.cermaticodingtest.network.ApiInterface.Companion.PAGE_SIZE
 
 class MainFragment : Fragment() {
 
@@ -62,17 +63,12 @@ class MainFragment : Fragment() {
             userAdapter.load(user)
         })
         viewModel.isLoading.observe(viewLifecycleOwner, {
-            if (it) {
-                recyclerView?.visibility = View.GONE
-                shimmerPlaceholder?.visibility = View.VISIBLE
-            } else {
-                recyclerView?.visibility = View.VISIBLE
-                shimmerPlaceholder?.visibility = View.GONE
-            }
+            viewModel.updateLayout(shimmerPlaceholder, recyclerView)
         })
         viewModel.isLoadError.observe(viewLifecycleOwner, {
-            if (it)
-            Toast.makeText(context, "Error when load data", Toast.LENGTH_SHORT).show()
+            if (it) {
+                Toast.makeText(context, "Error when load data", Toast.LENGTH_SHORT).show()
+            }
         })
     }
 
@@ -88,11 +84,7 @@ class MainFragment : Fragment() {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 currentPage = 1
-                if (query != null) {
-                    currentQuery = query
-                } else {
-                    currentQuery = ""
-                }
+                currentQuery = query ?: ""
                 Log.d("MainFragment", "Query : $query")
                 query?.let {
                     shimmerPlaceholder.startShimmerAnimation()
@@ -113,11 +105,8 @@ class MainFragment : Fragment() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 val lastItemAt = userAdapter.masterList.lastIndex
-                Log.d("NewsListFragment", "lastItemAt = $lastItemAt")
-                if (mLayoutManager.findLastCompletelyVisibleItemPosition() == lastItemAt && lastItemAt >= 12) {
-                    Log.d("NewsListFragment", "Is Last Row")
+                if (mLayoutManager.findLastCompletelyVisibleItemPosition() == lastItemAt && lastItemAt >= PAGE_SIZE) {
                     currentPage++
-                    Log.d("MainFragment", "Querry : $currentQuery")
                     viewModel.fetchFromRemote(CODE_LOAD_MORE, currentQuery, currentPage)
                     userAdapter.notifyDataSetChanged()
                 }

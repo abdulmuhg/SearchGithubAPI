@@ -2,13 +2,16 @@ package secretymus.id.cermaticodingtest
 
 import android.content.Context
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import secretymus.id.cermaticodingtest.network.ApiInterface
 
 class UserListAdapter(
     val context: Context,
@@ -30,7 +33,7 @@ class UserListAdapter(
     override fun getItemCount(): Int = masterList.size
 
     override fun getItemViewType(position: Int): Int {
-        return if (masterList.lastIndex == position && masterList.lastIndex >= 12) {
+        return if (masterList.lastIndex == position && masterList.lastIndex >= ApiInterface.PAGE_SIZE) {
             VIEW_LOADING
         } else {
             VIEW_CONTENT
@@ -54,18 +57,23 @@ class UserListAdapter(
     }
 
     fun load(list: List<User>) {
-        android.os.Handler(Looper.getMainLooper()).postDelayed({
-            if (masterList.size >= 12) {
-                masterList.apply {
-                    removeAt(masterList.lastIndex)
+        Log.d("UserAdapter", "ListUser: $list")
+        if (list.isNotEmpty()) {
+            android.os.Handler(Looper.getMainLooper()).postDelayed({
+                if (masterList.size >= ApiInterface.PAGE_SIZE) {
+                    masterList.apply {
+                        removeAt(masterList.lastIndex)
+                    }
                 }
-            }
-            masterList.addAll(list)
-            if (masterList.size >= 12) {
-                masterList.add(User())
-            }
-            notifyDataSetChanged()
-        }, 2000)
+                masterList.addAll(list)
+                if (masterList.size >= ApiInterface.PAGE_SIZE) {
+                    masterList.add(User())
+                }
+                notifyDataSetChanged()
+            }, 2000)
+        } else {
+            Toast.makeText(context, "User not found", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {

@@ -1,17 +1,16 @@
 package secretymus.id.cermaticodingtest.ui.main
 
 import android.util.Log
+import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.main_fragment.*
 import secretymus.id.cermaticodingtest.QuerySearchResult
 import secretymus.id.cermaticodingtest.User
 import secretymus.id.cermaticodingtest.network.ApiService
-import secretymus.id.cermaticodingtest.ui.main.MainFragment.Companion.CODE_FIRST_LOAD
 import secretymus.id.cermaticodingtest.ui.main.MainFragment.Companion.CODE_LOAD_MORE
 
 class MainViewModel : ViewModel() {
@@ -26,6 +25,16 @@ class MainViewModel : ViewModel() {
         disposable.clear()
     }
 
+    fun updateLayout(shimmerPlaceholder: View, recyclerView: View) {
+        if (isLoading.value == true) {
+            recyclerView.visibility = View.GONE
+            shimmerPlaceholder.visibility = View.VISIBLE
+        } else {
+            recyclerView.visibility = View.VISIBLE
+            shimmerPlaceholder.visibility = View.GONE
+        }
+    }
+
     fun fetchFromRemote(code: Int, query: String, page: Int) {
         isLoading.value = code != CODE_LOAD_MORE
         disposable.add(
@@ -34,9 +43,9 @@ class MainViewModel : ViewModel() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSingleObserver<QuerySearchResult>() {
                     override fun onSuccess(searchResult: QuerySearchResult) {
-                        users.value = searchResult.items
+                        users.postValue(searchResult.items)
                         isLoadError.value = false
-                        isLoading.value = false
+                        isLoading.postValue(false)
                     }
 
                     override fun onError(e: Throwable) {

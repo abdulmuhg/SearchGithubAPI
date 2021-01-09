@@ -10,6 +10,10 @@ interface ApiInterface {
     fun getSearchResult(
         @Query("q") query: String,
         @Query("page") page: Int,
-        @Query("per_page") per_page: Int = 12
+        @Query("per_page") per_page: Int = PAGE_SIZE
     ): Single<QuerySearchResult>
+
+    companion object{
+        const val PAGE_SIZE = 12
+    }
 }
